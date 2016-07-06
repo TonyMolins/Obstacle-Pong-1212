@@ -31,10 +31,6 @@ class GameScene: SKScene {
         
         backgroundColor = UIColor.blackColor()
         
-        //sets up gesture recognizer
-        let pan = UIPanGestureRecognizer(target: self, action: "panned:")
-        view.addGestureRecognizer(pan)
-        
         // Center line
         let lineSize = CGSize(width: view.frame.width, height: 2)
         centerLine = SKSpriteNode(color: UIColor.whiteColor(), size: lineSize)
@@ -64,10 +60,10 @@ class GameScene: SKScene {
         self.addChild(paddleTwo)
         paddleTwo.position.x = view.frame.width / 2
         paddleTwo.position.y = view.frame.height - 700
-<<<<<<< HEAD
+        // HEAD
         paddleTwo.physicsBody = SKPhysicsBody(rectangleOfSize: paddleTwoSize)
-=======
->>>>>>> kaka21garuda/master
+
+        // kaka21garuda/master
     }
     
     var previousTranslateX: CGFloat = 0.0
