@@ -6,8 +6,6 @@
 //  Copyright (c) 2016 Buka Cakrawala. All rights reserved.
 //
 
-//  Hello, you have been the forked
-
 import SpriteKit
 
 class GameScene: SKScene {
@@ -47,13 +45,15 @@ class GameScene: SKScene {
         addChild(paddleOne)
         paddleOne.position.x = view.frame.width / 2
         paddleOne.position.y = view.frame.height - 30
+        paddleOne.physicsBody = SKPhysicsBody(rectangleOfSize: paddleOneSize)
         
         // Paddle 2
         let paddleTwoSize = CGSize(width: 65, height: 12)
         paddleTwo = SKSpriteNode(color: UIColor.blueColor(), size: paddleTwoSize)
         addChild(paddleTwo)
         paddleTwo.position.x = view.frame.width / 2
-        paddleTwo.position.y = view.frame.height - 630
+        paddleTwo.position.y = view.frame.height - 700
+        paddleTwo.physicsBody = SKPhysicsBody(rectangleOfSize: paddleTwoSize)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
