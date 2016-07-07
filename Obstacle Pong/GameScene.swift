@@ -8,6 +8,13 @@
 
 import SpriteKit
 
+struct PhysicsCategory {
+    static let None:    UInt32 = 0
+    static let Ball:    UInt32 = 0b1
+    static let Paddle:  UInt32 = 0b10
+    static let Edge:    UInt32 = 0b100
+}
+
 class GameScene: SKScene {
     
     var centerLine: SKSpriteNode!
@@ -15,19 +22,16 @@ class GameScene: SKScene {
     var paddleOne: SKSpriteNode!
     var paddleTwo: SKSpriteNode!
     
-    struct TouchInfo {
-        var location: CGPoint
-        var time: NSTimeInterval
-    }
     
-    var selectedNode: SKSpriteNode?
-    var history: [TouchInfo]?
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsBody = SKPhysicsBody(edgeLoopFromRect: view.frame)
+        physicsBody?.categoryBitMask = PhysicsCategory.Edge
+        physicsBody?.contactTestBitMask = PhysicsCategory.None
+        physicsBody?.collisionBitMask = PhysicsCategory.Ball|PhysicsCategory.Paddle
         
         backgroundColor = UIColor.blackColor()
         
@@ -45,52 +49,70 @@ class GameScene: SKScene {
         ball.position.x = view.frame.width / 2
         ball.position.y = view.frame.height / 2
         ball.physicsBody = SKPhysicsBody(circleOfRadius: 15)
+        ball.physicsBody?.categoryBitMask = PhysicsCategory.Ball
+        ball.physicsBody?.contactTestBitMask = PhysicsCategory.Paddle
+        ball.physicsBody?.collisionBitMask = PhysicsCategory.Paddle|PhysicsCategory.Edge
         
         // Paddle 1 
-        let paddleOneSize = CGSize(width: 70, height: 12)
+        let paddleOneSize = CGSize(width: 70, height: 20)
         paddleOne = SKSpriteNode(color: UIColor.greenColor(), size: paddleOneSize)
         self.addChild(paddleOne)
         paddleOne.position.x = view.frame.width / 2
         paddleOne.position.y = view.frame.height - 30
         paddleOne.physicsBody = SKPhysicsBody(rectangleOfSize: paddleOneSize)
+<<<<<<< HEAD
         
+=======
+        paddleOne.physicsBody?.categoryBitMask = PhysicsCategory.Paddle
+        paddleOne.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
+        paddleOne.physicsBody?.collisionBitMask = PhysicsCategory.Ball|PhysicsCategory.Edge
+        paddleOne.physicsBody?.dynamic = false
+    
+>>>>>>> kaka21garuda/master
         // Paddle 2
-        let paddleTwoSize = CGSize(width: 70, height: 12)
+        let paddleTwoSize = CGSize(width: 70, height: 20)
         paddleTwo = SKSpriteNode(color: UIColor.blueColor(), size: paddleTwoSize)
         self.addChild(paddleTwo)
         paddleTwo.position.x = view.frame.width / 2
+<<<<<<< HEAD
         paddleTwo.position.y = view.frame.height - 700
         // HEAD
         paddleTwo.physicsBody = SKPhysicsBody(rectangleOfSize: paddleTwoSize)
 
         // kaka21garuda/master
+=======
+        paddleTwo.position.y = 30
+        paddleTwo.physicsBody = SKPhysicsBody(rectangleOfSize: paddleTwoSize)
+        paddleTwo.physicsBody?.categoryBitMask = PhysicsCategory.Paddle
+        paddleTwo.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
+        paddleTwo.physicsBody?.collisionBitMask = PhysicsCategory.Ball|PhysicsCategory.Edge
+        paddleTwo.physicsBody?.dynamic = false
+        
+>>>>>>> kaka21garuda/master
     }
-    
-    var previousTranslateX: CGFloat = 0.0
-    
-    func panned(sender: UIPanGestureRecognizer) {
-        //retrieve pan movement along the x axis of the view since the touches began
-        let currentTranslateX = sender.translationInView(view!).x
-        //calculate translation
-        let translateX = currentTranslateX - previousTranslateX
-        //move shape within frame boudaries
-        let newShapeX = paddleOne.position.x + translateX
-        if newShapeX < frame.maxX && newShapeX > frame.minX {
-            paddleOne.position = CGPointMake(paddleOne.position.x + translateX, paddleOne.position.y)
-        }
-        //(re-)set previous measurement
-        if sender.state == .Ended {
-            previousTranslateX = 0
-        } else {
-            previousTranslateX = currentTranslateX
-        }
-    
-    }
-    }
-
-    func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    //MARK: touch events
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
-       
+        for touch: AnyObject in touches {
+            ball.physicsBody?.applyImpulse(CGVectorMake(100, 100))
+        }
         
     }
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches {
+            let location = touch.locationInNode(self)
+            let centerY = view!.frame.height / 2
+            if location.y < centerY {
+                //touch in the bottom half of the screen
+                //TODO: move paddle 2
+                paddleTwo.position.x = location.x
+            } else {
+                //touch in the top half of the screen
+                //TODO: move paddle 1
+                paddleOne.position.x = location.x
+            }
+        }
+    }
+
     
+}
