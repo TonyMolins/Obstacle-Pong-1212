@@ -60,27 +60,21 @@ class GameScene: SKScene {
         paddleOne.position.x = view.frame.width / 2
         paddleOne.position.y = view.frame.height - 30
         paddleOne.physicsBody = SKPhysicsBody(rectangleOfSize: paddleOneSize)
-<<<<<<< HEAD
-        
-=======
+
         paddleOne.physicsBody?.categoryBitMask = PhysicsCategory.Paddle
         paddleOne.physicsBody?.contactTestBitMask = PhysicsCategory.Ball
         paddleOne.physicsBody?.collisionBitMask = PhysicsCategory.Ball|PhysicsCategory.Edge
         paddleOne.physicsBody?.dynamic = false
     
->>>>>>> kaka21garuda/master
         // Paddle 2
         let paddleTwoSize = CGSize(width: 70, height: 20)
         paddleTwo = SKSpriteNode(color: UIColor.blueColor(), size: paddleTwoSize)
         self.addChild(paddleTwo)
         paddleTwo.position.x = view.frame.width / 2
-<<<<<<< HEAD
         paddleTwo.position.y = view.frame.height - 700
         // HEAD
         paddleTwo.physicsBody = SKPhysicsBody(rectangleOfSize: paddleTwoSize)
 
-        // kaka21garuda/master
-=======
         paddleTwo.position.y = 30
         paddleTwo.physicsBody = SKPhysicsBody(rectangleOfSize: paddleTwoSize)
         paddleTwo.physicsBody?.categoryBitMask = PhysicsCategory.Paddle
@@ -88,15 +82,10 @@ class GameScene: SKScene {
         paddleTwo.physicsBody?.collisionBitMask = PhysicsCategory.Ball|PhysicsCategory.Edge
         paddleTwo.physicsBody?.dynamic = false
         
->>>>>>> kaka21garuda/master
     }
     //MARK: touch events
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
-        for touch: AnyObject in touches {
-            ball.physicsBody?.applyImpulse(CGVectorMake(100, 100))
-        }
-        
     }
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
